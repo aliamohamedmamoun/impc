@@ -9,14 +9,24 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@types/node": "18.16.3",
-    "@types/react": "18.2.4",
-    "@types/react-dom": "18.2.3",
+    "@nivo/core": "^0.82.1",
+    "@nivo/heatmap": "^0.82.1",
+    "bootstrap": "^5.2.3",
     "eslint": "8.39.0",
     "eslint-config-next": "13.3.4",
     "next": "13.3.4",
     "react": "18.2.0",
+    "react-bootstrap": "^2.7.4",
+    "react-bootstrap-typeahead": "^6.1.2",
     "react-dom": "18.2.0",
     "typescript": "5.0.4"
+  },
+  "devDependencies": {
+    "@types/bootstrap": "^5.2.6",
+    "@types/node": "18.16.3",
+    "@types/react": "18.2.4",
+    "@types/react-bootstrap": "^0.32.32",
+    "@types/react-dom": "18.2.3",
+    "sass": "^1.62.1"
   }
 }

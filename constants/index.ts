@@ -1,0 +1,2 @@
+export const NUMBER_OF_ITEMS_PER_PAGE = 50;
+export const ON_DEMAND_TIME_INTERVAL = 60;
