@@ -8,7 +8,9 @@ export default function Intro() {
   return (
     <Container fluid className="mb-4">
       <Row>
-        <h1 className="mb-4">Introduction to IMPC Embryo Data</h1>
+        <h1 className="mb-4 text-decoration-underline">
+          Introduction to IMPC Embryo Data
+        </h1>
       </Row>
       <Row>
         <p>
@@ -46,8 +48,8 @@ export default function Intro() {
           </a>
         </p>
       </Row>
-      <Row xs={1} sm={1} md={3}>
-        <Col className="position-relative" style={{ height: '270px' }}>
+      <Row xs={1} sm={1} md={3} className="justify-content-center">
+        <Col className="position-relative imageColumn">
           <Image
             src="/embryo_image_1.jpeg"
             alt="embryo sample 1"
@@ -57,7 +59,7 @@ export default function Intro() {
                     calc(100% / 3)"
           />
         </Col>
-        <Col className="position-relative " style={{ height: '270px' }}>
+        <Col className="position-relative imageColumn">
           <Image
             src="/embryo_image_2.jpg"
             alt="embryo sample 2"
@@ -67,7 +69,7 @@ export default function Intro() {
                     calc(100% / 3)"
           />
         </Col>
-        <Col className="position-relative" style={{ height: '270px' }}>
+        <Col className="position-relative imageColumn">
           <Image
             src="/embryo_image_3.jpeg"
             alt="embryo sample 3"

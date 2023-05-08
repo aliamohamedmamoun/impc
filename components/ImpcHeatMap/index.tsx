@@ -78,6 +78,7 @@ export default function ImpcHeatMap({ data }: IHeatMap) {
         );
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activePage]);
 
   for (let number = 1; number <= numberOfPages; number++) {
@@ -189,7 +190,9 @@ export default function ImpcHeatMap({ data }: IHeatMap) {
   return (
     <Container fluid>
       <Row>
-        <h1 className="mb-4 mt-4">Embryo Phenotype Data HeatMap</h1>
+        <h1 className="mb-0 mt-4 text-decoration-underline">
+          Embryo Phenotype Data HeatMap
+        </h1>
       </Row>
       <Row className="mb-4 mt-4" xs={1} sm={1} md={2}>
         <Col>
@@ -230,11 +233,9 @@ export default function ImpcHeatMap({ data }: IHeatMap) {
         </Col>
       </Row>
       <Row
-        className="mt-4"
+        className="mt-4 vw-100 vh-100"
         style={{
-          width: '100vw',
           maxWidth: '1170px',
-          height: `100vh`,
         }}
       >
         <HeatMap
