@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import Container from 'react-bootstrap/Container';
 import Pagination from 'react-bootstrap/Pagination';
@@ -29,6 +29,9 @@ export default function ImpcHeatMap({ data }: IHeatMap) {
       b.data.reduce((acc, c) => acc + (c.y || 0), 0) -
       a.data.reduce((acc, c) => acc + (c.y || 0), 0)
   );
+  // to keep track of newly updated data instead of updating the state with large amount of data
+  const newData = useRef<HeatMapData[]>([]);
+
   const originalHeatMapDataLength = originalHeatMapData.length;
 
   const [geneSelections, setGeneSelections] = useState<string[] | Object[]>([]);
@@ -50,23 +53,32 @@ export default function ImpcHeatMap({ data }: IHeatMap) {
     geneSelections.length > 0;
   let paginationItems = [];
 
-  // handle page slicing on non-filtered data
+  // handle sliding.slicing window on newData
   useEffect(() => {
-    if (activePage >= 1 && !isFilterApplied) {
+    if (activePage >= 1) {
       const startingIndex = (activePage - 1) * NUMBER_OF_ITEMS_PER_PAGE;
       const endingIndex =
         (activePage - 1) * NUMBER_OF_ITEMS_PER_PAGE + NUMBER_OF_ITEMS_PER_PAGE;
-      const newData = originalHeatMapData.slice(
-        startingIndex,
-        endingIndex > originalHeatMapDataLength
-          ? originalHeatMapDataLength
-          : endingIndex
-      );
-      setHeatMapData(newData);
+      if (!isFilterApplied) {
+        newData.current = originalHeatMapData.slice(
+          startingIndex,
+          endingIndex > originalHeatMapDataLength
+            ? originalHeatMapDataLength
+            : endingIndex
+        );
+        setHeatMapData(newData.current);
+      } else {
+        setHeatMapData(
+          newData.current.slice(
+            startingIndex,
+            endingIndex > newData.current.length
+              ? newData.current.length
+              : endingIndex
+          )
+        );
+      }
     }
   }, [activePage]);
-
-  console.log(heatMapData.length);
 
   for (let number = 1; number <= numberOfPages; number++) {
     paginationItems.push(
@@ -92,21 +104,6 @@ export default function ImpcHeatMap({ data }: IHeatMap) {
     }
   };
 
-  // handles page slicing on filtered data
-  const handleSlicingRange = () => {
-    if (numberOfPages > 1) {
-      const startingIndex = (activePage - 1) * NUMBER_OF_ITEMS_PER_PAGE;
-      const endingIndex =
-        (activePage - 1) * NUMBER_OF_ITEMS_PER_PAGE + NUMBER_OF_ITEMS_PER_PAGE;
-      return heatMapData.slice(
-        startingIndex,
-        endingIndex > heatMapData.length ? heatMapData.length : endingIndex
-      );
-    }
-
-    return heatMapData;
-  };
-
   const handleGeneSelectionChange = (selected: string[] | Object[]) => {
     setGeneSelections(selected);
 
@@ -114,14 +111,16 @@ export default function ImpcHeatMap({ data }: IHeatMap) {
       setHeatMapData(originalHeatMapData.slice(0, NUMBER_OF_ITEMS_PER_PAGE));
       resetPagination(originalHeatMapDataLength);
     } else {
-      const newData = [];
+      newData.current = [];
       const selectedOptions = selected as HeatMapData[];
 
       for (let i of selectedOptions) {
-        newData.push(...originalHeatMapData.filter((item) => item.id === i.id));
+        newData.current.push(
+          ...originalHeatMapData.filter((item) => item.id === i.id)
+        );
       }
-      resetPagination(newData.length);
-      setHeatMapData(newData);
+      resetPagination(newData.current.length);
+      setHeatMapData(newData.current.slice(0, NUMBER_OF_ITEMS_PER_PAGE));
     }
     //clear other filters
     if (topPhenoTypeSelections.length) {
@@ -136,23 +135,19 @@ export default function ImpcHeatMap({ data }: IHeatMap) {
     setTopPhenoTypeSelections(selected);
 
     if (selected.length === 0) {
-      console.log(selected);
       setHeatMapData(originalHeatMapData.slice(0, NUMBER_OF_ITEMS_PER_PAGE));
       resetPagination(originalHeatMapDataLength);
     } else {
-      const newData = [];
+      newData.current = [];
       const selectedOptions = selected as HeatMapData[];
 
-      for (let i of selectedOptions) {
-        newData.push(
-          ...data.filter(
-            (item) =>
-              item.top_level_phenotype_term.top_level_mp_term_name === i.id
-          )
-        );
-      }
-      resetPagination(newData.length);
-      setHeatMapData(mapDataToHeatMapData(newData));
+      newData.current = originalHeatMapData.filter((item) =>
+        selectedOptions.every((option) =>
+          item.data.some((i) => i.x === option.id)
+        )
+      );
+      resetPagination(newData.current.length);
+      setHeatMapData(newData.current.slice(0, NUMBER_OF_ITEMS_PER_PAGE));
     }
     //clear other filters
     if (geneSelections.length) {
@@ -171,13 +166,12 @@ export default function ImpcHeatMap({ data }: IHeatMap) {
       const newPercentile = Math.floor(
         ((newValue + 10) / 100) * originalHeatMapDataLength
       );
-      console.log(newPercentile, newValue);
-      const newData = sortedOriginalData.slice(
+      newData.current = sortedOriginalData.slice(
         0,
         newPercentile > dataLength ? dataLength : newPercentile
       );
-      resetPagination(newData.length);
-      setHeatMapData(newData.slice(0, NUMBER_OF_ITEMS_PER_PAGE));
+      resetPagination(newData.current.length);
+      setHeatMapData(newData.current.slice(0, NUMBER_OF_ITEMS_PER_PAGE));
     } else {
       setHeatMapData(originalHeatMapData.slice(0, NUMBER_OF_ITEMS_PER_PAGE));
       resetPagination(originalHeatMapDataLength);
@@ -240,11 +234,11 @@ export default function ImpcHeatMap({ data }: IHeatMap) {
         style={{
           width: '100vw',
           maxWidth: '1170px',
-          height: '100vh',
+          height: `100vh`,
         }}
       >
         <HeatMap
-          heatMapData={isFilterApplied ? handleSlicingRange() : heatMapData}
+          heatMapData={heatMapData}
           minValue={1}
           maxValue={originalHeatMapData[
             originalHeatMapDataLength - 1

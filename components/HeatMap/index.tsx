@@ -12,7 +12,7 @@ export default function HeatMap({ heatMapData, minValue, maxValue }: IHeatMap) {
   return (
     <ResponsiveHeatMap
       data={heatMapData}
-      margin={{ top: 100, right: 90, bottom: 60, left: 90 }}
+      margin={{ top: 100, right: 90, bottom: 25, left: 90 }}
       valueFormat=">-.2s"
       axisTop={{
         tickSize: 5,
