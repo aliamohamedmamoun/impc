@@ -1,6 +1,10 @@
+# IMPC Landing page
+
+A static landing page for visualizing and filtering the International Mouse Phenotyping Consortium (IMPC) data which is an international effort by 21 research institutions to identify the function of every protein-coding gene in the mouse genome.
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
+# Getting Started
 
 First, run the development server:
 
@@ -14,25 +18,66 @@ pnpm dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+Other Scripts:
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+To build the application for production usage :
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+```bash
+npm run build
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+To start a Next.js production server:
 
-## Learn More
+```bash
+npm run start
+```
 
-To learn more about Next.js, take a look at the following resources:
+o set up Next.js' built-in ESLint configuration:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run start
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+# Used Technologies
 
-## Deploy on Vercel
+### Next JS:
+
+Next.js is a server-rendered React framework that requires little or no configuration.
+
+Next.js:
+
+- Reduce network latency to increase page load time.
+- Server-side processing efficiency that can be expected.
+- Creates good SEO.
+- Works perfectly with Static Websites and Landing pages.
+
+### React-Bootstrap:
+
+React-bootstrap is a front-End Stylesheet library.It is a time saver for developers and come with various build in components and styles.
+
+### Nivo:
+
+Nivo provides a rich set of data visualization components, built on top of D3 and React.
+
+# TODO
+
+- Use IndexedDb and workers to inhance the overall performance of Data Filtering,Pagination and Storing of large dataset.
+- Fix the lag in the `InputRange` component.
+
+# Resources and Docs.
+
+- [Next.js Documentation](https://nextjs.org/docs).
+- [React Documentation](https://react.dev/).
+- [Bootstrap Documentation](https://getbootstrap.com/docs/5.3/getting-started/introduction/).
+- [React-BootStrap](https://react-bootstrap.github.io/).
+- [Nivo](https://nivo.rocks).
+
+# Deployed on Vercel
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Deployed APP [IMPC Landing page](https://impc-q0k2y3y3a-aliamohamedmamoun.vercel.app/).
+
+### Time taken
+
+37 hours
